@@ -215,6 +215,7 @@
 
         basic_info_th = (thread_basic_info_t) thinfo;
 
+        // 空转线程剔除
         if (!(basic_info_th->flags & TH_FLAGS_IDLE)) {
             tot_sec = tot_sec + basic_info_th->user_time.seconds + basic_info_th->system_time.seconds;
             tot_usec = tot_usec + basic_info_th->system_time.microseconds + basic_info_th->system_time.microseconds;
