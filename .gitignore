@@ -11,3 +11,6 @@
 /gradle/oss-android-template.gradle
 build_macos
 build_ios
+DerivedData
+xcshareddata
+xcuserdata
