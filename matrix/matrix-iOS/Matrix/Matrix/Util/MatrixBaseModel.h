@@ -16,6 +16,7 @@
 
 #import <Foundation/Foundation.h>
 
+// 实现 NSCoding 协议的基类
 @interface MatrixBaseModel : NSObject <NSCoding>
 
 @end

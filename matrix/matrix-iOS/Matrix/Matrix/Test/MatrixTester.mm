@@ -87,6 +87,14 @@ public:
 
 - (void)deadSignalCrash
 {
+    // int kill(pid_t pid, int signo);
+    // int raise(int signo);
+    // kill和raise是用来发送信号的:
+    // kill把信号发送给进程或进程组;
+    // raise把信号发送给(进程)自身.
+    //
+    // SIGBUS(Bus error)意味着指针所对应的地址是有效地址，但总线不能正常使用该
+    // 指针。通常是未对齐的数据访问所致。
     raise(SIGBUS);
 }
 

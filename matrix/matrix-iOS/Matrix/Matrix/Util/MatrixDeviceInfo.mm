@@ -200,6 +200,7 @@
 	assert(junk == 0);
 	
 	// We're being debugged if the P_TRACED flag is set.
+    // 如果 extern_proc.p_flag 的值为 P_TRACED 表明有 debugged 进程在跟踪
 	return ((info.kp_proc.p_flag & P_TRACED) != 0);
 }
 

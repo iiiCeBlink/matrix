@@ -133,6 +133,10 @@ static BOOL s_isSuspendKilled = NO;
                                                object:nil];
 #endif
 
+    // int atexit (void (*)(void));
+    // 它是在正常程序退出时调用的函数，我们把他叫为登记函数
+    // ⼀个进程可以登记32个函数，这些函数由exit自动调用，这些函数被称为终止处理函数，atexit函数可以登记这些函数。
+    // exit调用终止处理函数的顺序和atexit登记的顺序相反，如果一个函数被多次登记，也会被多次调用。
     atexit(g_matrix_app_exit);
 }
 
