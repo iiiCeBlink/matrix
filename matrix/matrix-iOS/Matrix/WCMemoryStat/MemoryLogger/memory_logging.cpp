@@ -443,6 +443,7 @@ void flush_last_data(const char *log_dir)
 	close_allocation_event_buffer(event_buffer);
 }
 
+// 内存日志入口
 int enable_memory_logging(const char *log_dir)
 {
 	err_code = MS_ERRC_SUCCESS;
