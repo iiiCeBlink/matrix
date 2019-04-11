@@ -67,6 +67,7 @@ struct backtrace_uniquing_table {
 typedef uint64_t slot_address;
 typedef uint64_t slot_parent;
 
+// 是指把原来对齐方式设置压栈，并设新的对齐方式设置为 8 个字节对齐
 #pragma pack(push,8)
 struct table_slot_t {
 	union {
@@ -78,6 +79,7 @@ struct table_slot_t {
 		} detail;
 	};
 };
+// 恢复对齐状态
 #pragma pack(pop)
 
 struct stack_entry_t {

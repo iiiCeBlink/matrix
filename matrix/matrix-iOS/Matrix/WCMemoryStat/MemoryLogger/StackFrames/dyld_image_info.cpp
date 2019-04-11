@@ -99,6 +99,7 @@ typedef struct nlist nlist_t;
 #define LC_SEGMENT_ARCH_DEPENDENT LC_SEGMENT
 #endif
 
+// 保存到 dyld_image_info_file 文件
 static void __save_to_file()
 {
 	if (image_info_file.fd < 0) {
@@ -188,6 +189,7 @@ static void __dyld_image_add_callback(const struct mach_header *header, intptr_t
 	__add_info_for_image(header, slide);
 }
 
+// 初始化函数
 static void __init_image_info_list()
 {
 	static bool static_isInit = false;
@@ -214,6 +216,7 @@ static void __init_image_info_list()
 	}
 }
 
+// 根据地址以二分搜索的形式去文件中查找该地址所在的 segment 位置
 dyld_image_info *__binary_search(dyld_image_info_file *file, vm_address_t address)
 {
 	int low = 0;
@@ -308,6 +311,7 @@ const char *app_uuid()
 	return app_image_info.uuid;
 }
 
+// 打开 image_infos.dat 文件
 dyld_image_info_file *open_dyld_image_info_file(const char *event_dir)
 {
 	int fd = open_file(event_dir, "image_infos.dat");
@@ -330,6 +334,7 @@ dyld_image_info_file *open_dyld_image_info_file(const char *event_dir)
 				goto init_fail;
 			}
 
+            // buffer 指向申请的 mmap 映射内存区域
 			void *buff = inter_mmap(NULL, fs, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 			if (buff == MAP_FAILED) {
 				err_code = MS_ERRC_DI_FILE_MMAP_FAIL;
@@ -368,6 +373,7 @@ init_fail:
 	return NULL;
 }
 
+// 关闭文件句柄以及对应的 mmap 区域
 void close_dyld_image_info_file(dyld_image_info_file *file_context)
 {
 	if (file_context == NULL) {
