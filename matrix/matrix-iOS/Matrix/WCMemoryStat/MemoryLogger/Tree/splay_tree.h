@@ -24,6 +24,7 @@
 typedef void *(*spt_reallocator)(void *context, void *oldMem, size_t newSize);
 typedef void  (*spt_deallocator)(void *context, void *mem);
 
+// 保存存活对象的平衡二叉树
 template <typename T>
 class splay_tree {
 private:

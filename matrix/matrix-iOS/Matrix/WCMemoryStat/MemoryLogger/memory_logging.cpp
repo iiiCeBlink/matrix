@@ -73,6 +73,7 @@ void *__memory_logging_event_writing_thread(void *param);
 #pragma mark -
 #pragma mark Memory Logging
 
+// 创建并初始化监控线程
 bool __prepare_working_thread()
 {
 	int ret;
@@ -98,6 +99,7 @@ bool __prepare_working_thread()
 	}
 }
 
+// 内存事件回调
 void __memory_event_callback(uint32_t type_flags, uintptr_t zone_ptr, uintptr_t arg2, uintptr_t arg3, uintptr_t return_val, uint32_t num_hot_to_skip)
 {
     uintptr_t size = 0;
