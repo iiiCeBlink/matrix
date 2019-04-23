@@ -416,6 +416,7 @@ KSStackCursor *kscrash_pointThreadCallback(void)
         m_stackHandler = [[WCFilterStackHandler alloc] init];
     }
     
+    // 通过 while 使子线程编程常驻线程
     while (YES) {
         @autoreleasepool {
             if (g_bMonitor) {
@@ -429,8 +430,10 @@ KSStackCursor *kscrash_pointThreadCallback(void)
                 if (dumpType != EDumpType_Unlag) {
                     if (EDumpType_BackgroundMainThreadBlock == dumpType ||
                         EDumpType_MainThreadBlock == dumpType) {
+                        // 线程数超过 64 个，认为线程过多造成卡顿，不用记录主线程堆栈
                         if (g_CurrentThreadCount > 64) {
                             dumpType = EDumpType_BlockThreadTooMuch;
+                            // 函数主线程堆栈写文件记录
                             [self dumpFileWithType:dumpType];
                         } else {
                             EFilterType filterType = [self needFilter];
@@ -473,6 +476,14 @@ KSStackCursor *kscrash_pointThreadCallback(void)
                 }
             }
 
+            // 时间间隔处理，检测时间间隔正常情况是 1 秒，间隔时间会受到检测线程退火算法影响，按照斐波拉契数列递增，直到没有卡顿时恢复为 1 秒。
+            // 退火算法影响的是 m_nIntervalTime
+            // 采用了退火算法递增时间间隔，来避免因为同一个卡顿问题，不断去获取主线程堆栈信息的情况。
+            
+            /**
+             通过 needFilter 方法去对比前后两次获取的主线程堆栈，如果两次堆栈是一样的，那就表示卡顿没有结束，满足退火算法条件，
+             needFilter 方法会返回 EFilterType 。满足退火算法后，主线程堆栈不会立刻进行写文件操作。
+             */
             for (int nCnt = 0; nCnt < m_nIntervalTime && !m_bStop; nCnt++) {
                 if (g_MainThreadHandle && g_bMonitor) {
                     int intervalCount = g_CheckPeriodTime / g_PerStackInterval;
